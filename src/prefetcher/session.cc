@@ -37,6 +37,9 @@ namespace prefetcher {
 // Print per-entry details even if successful. Default-off, too spammy.
 static constexpr bool kLogVerboseReadAhead = false;
 
+// Whether to allow session dumping, useful only for debugging
+static constexpr bool kAllowDumping = false;
+
 std::ostream& operator<<(std::ostream& os, const Session& session) {
   session.Dump(os, /*multiline*/false);
   return os;
@@ -437,6 +440,9 @@ static bool IsDumpEveryPath() {
 }
 
 void SessionDirect::Dump(std::ostream& os, bool multiline) const {
+  if (!kAllowDumping) {
+    return;
+  }
   {
     struct timeval now;
     gettimeofday(&now, nullptr);
